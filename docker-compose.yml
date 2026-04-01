@@ -14,32 +14,5 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  api:
-    build:
-      context: ./apps/api
-      dockerfile: Dockerfile
-    container_name: cesizen_api
-    restart: unless-stopped
-    environment:
-      DATABASE_URL: postgresql://cesizen:cesizen_secret@postgres:5432/cesizen_db
-      JWT_SECRET: cesizen_jwt_super_secret_2025
-      PORT: 3000
-      NODE_ENV: production
-    ports:
-      - '3000:3000'
-    depends_on:
-      - postgres
-
-  web:
-    build:
-      context: ./apps/web
-      dockerfile: Dockerfile
-    container_name: cesizen_web
-    restart: unless-stopped
-    ports:
-      - '80:80'
-    depends_on:
-      - api
-
 volumes:
   postgres_data:
