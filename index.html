@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CESIZen — Santé Mentale & Bien-être</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #2D6A4F;
+    --green-light: #52B788;
+    --green-pale: #D8F3DC;
+    --green-mid: #40916C;
+    --accent: #F4A261;
+    --accent2: #E76F51;
+    --bg: #F8FAF9;
+    --white: #FFFFFF;
+    --text: #1B2D27;
+    --text-muted: #6B8F7E;
+    --border: #C8E6D4;
+    --card: #FFFFFF;
+    --danger: #E05252;
+    --warning: #F4A261;
+    --info: #4A90D9;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(45,106,79,0.10);
+    --shadow-lg: 0 12px 48px rgba(45,106,79,0.16);
+    --transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Sora',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(255,255,255,0.92); backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 32px; height:64px;
+  }
+  .nav-logo { display:flex; align-items:center; gap:10px; font-family:'DM Serif Display',serif; font-size:1.4rem; color:var(--green); cursor:pointer; }
+  .nav-logo svg { width:36px; height:36px; }
+  .nav-links { display:flex; gap:8px; align-items:center; }
+  .nav-links button { background:none; border:none; font-family:'Sora',sans-serif; font-size:0.9rem; color:var(--text-muted); cursor:pointer; padding:8px 16px; border-radius:10px; transition:var(--transition); font-weight:500; }
+  .nav-links button:hover, .nav-links button.active { background:var(--green-pale); color:var(--green); }
+  .nav-cta { background:var(--green)!important; color:var(--white)!important; padding:8px 20px!important; }
+  .nav-cta:hover { background:var(--green-mid)!important; }
+  .nav-user { display:flex; align-items:center; gap:10px; }
+  .avatar { width:36px; height:36px; background:var(--green-pale); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:600; color:var(--green); font-size:0.85rem; cursor:pointer; }
+
+  /* PAGES */
+  .page { display:none; padding-top:64px; min-height:100vh; animation:fadeIn 0.3s ease; }
+  .page.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+  /* HOME */
+  .hero {
+    min-height:calc(100vh - 64px);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:60px 24px;
+    background: radial-gradient(ellipse at 30% 20%, #D8F3DC 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, #B7E4C7 0%, transparent 50%),
+                var(--bg);
+    position:relative; overflow:hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; top:-100px; right:-100px;
+    width:400px; height:400px; border-radius:50%;
+    background:rgba(82,183,136,0.08); pointer-events:none;
+  }
+  .hero-badge { background:var(--green-pale); color:var(--green); font-size:0.8rem; font-weight:600; padding:6px 16px; border-radius:100px; display:inline-flex; align-items:center; gap:6px; margin-bottom:28px; border:1px solid var(--border); }
+  .hero h1 { font-family:'DM Serif Display',serif; font-size:clamp(2.5rem,6vw,4.5rem); line-height:1.1; margin-bottom:20px; max-width:700px; }
+  .hero h1 span { color:var(--green); font-style:italic; }
+  .hero p { font-size:1.1rem; color:var(--text-muted); max-width:520px; line-height:1.7; margin-bottom:40px; }
+  .hero-btns { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
+  .btn { padding:14px 28px; border-radius:12px; font-family:'Sora',sans-serif; font-size:0.95rem; font-weight:600; cursor:pointer; transition:var(--transition); border:none; display:inline-flex; align-items:center; gap:8px; }
+  .btn-primary { background:var(--green); color:white; box-shadow:0 4px 16px rgba(45,106,79,0.3); }
+  .btn-primary:hover { background:var(--green-mid); transform:translateY(-2px); box-shadow:0 8px 24px rgba(45,106,79,0.35); }
+  .btn-secondary { background:white; color:var(--green); border:2px solid var(--border); }
+  .btn-secondary:hover { border-color:var(--green); background:var(--green-pale); }
+  .stats-row { display:flex; gap:48px; margin-top:64px; flex-wrap:wrap; justify-content:center; }
+  .stat { text-align:center; }
+  .stat-num { font-family:'DM Serif Display',serif; font-size:2rem; color:var(--green); }
+  .stat-label { font-size:0.8rem; color:var(--text-muted); margin-top:4px; font-weight:500; }
+  .features-section { padding:80px 24px; max-width:1100px; margin:0 auto; }
+  .section-title { font-family:'DM Serif Display',serif; font-size:2rem; text-align:center; margin-bottom:8px; }
+  .section-sub { text-align:center; color:var(--text-muted); margin-bottom:48px; }
+  .features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; }
+  .feature-card { background:white; border-radius:var(--radius); padding:28px; border:1px solid var(--border); transition:var(--transition); }
+  .feature-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+  .feat-icon { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:16px; }
+  .feat-icon.green { background:var(--green-pale); }
+  .feat-icon.orange { background:#FEF0E7; }
+  .feat-icon.blue { background:#EEF4FF; }
+  .feature-card h3 { font-size:1.05rem; margin-bottom:8px; }
+  .feature-card p { font-size:0.9rem; color:var(--text-muted); line-height:1.6; }
+
+  /* CONTAINER */
+  .container { max-width:1100px; margin:0 auto; padding:40px 24px; }
+  .page-header { margin-bottom:32px; }
+  .page-header h2 { font-family:'DM Serif Display',serif; font-size:1.9rem; }
+  .page-header p { color:var(--text-muted); margin-top:4px; }
+
+  /* CARDS */
+  .card { background:white; border-radius:var(--radius); border:1px solid var(--border); padding:24px; }
+  .card + .card { margin-top:16px; }
+
+  /* INFORMATIONS PAGE */
+  .info-tabs { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
+  .tab-btn { padding:8px 20px; border-radius:100px; font-family:'Sora',sans-serif; font-size:0.85rem; font-weight:600; cursor:pointer; border:1.5px solid var(--border); background:white; color:var(--text-muted); transition:var(--transition); }
+  .tab-btn.active, .tab-btn:hover { background:var(--green); color:white; border-color:var(--green); }
+  .info-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px; }
+  .info-card { background:white; border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; transition:var(--transition); cursor:pointer; }
+  .info-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+  .info-card-img { height:140px; display:flex; align-items:center; justify-content:center; font-size:3rem; }
+  .info-card-img.prevention { background:linear-gradient(135deg,#D8F3DC,#B7E4C7); }
+  .info-card-img.exercise { background:linear-gradient(135deg,#FEF0E7,#FDDCB4); }
+  .info-card-body { padding:20px; }
+  .info-tag { display:inline-block; font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; padding:3px 10px; border-radius:100px; margin-bottom:10px; }
+  .tag-prevention { background:#D8F3DC; color:var(--green); }
+  .tag-exercise { background:#FEF0E7; color:var(--accent2); }
+  .info-card-body h3 { font-size:1rem; margin-bottom:6px; }
+  .info-card-body p { font-size:0.85rem; color:var(--text-muted); line-height:1.6; }
+  .info-card-body .read-more { font-size:0.82rem; color:var(--green); font-weight:600; margin-top:12px; display:inline-block; }
+  .search-bar { display:flex; align-items:center; gap:10px; background:white; border:1.5px solid var(--border); border-radius:12px; padding:10px 16px; margin-bottom:20px; }
+  .search-bar input { border:none; outline:none; font-family:'Sora',sans-serif; font-size:0.9rem; flex:1; background:transparent; color:var(--text); }
+  .search-bar span { color:var(--text-muted); }
+
+  /* TRACKER */
+  .tracker-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:12px; }
+  .emotion-tabs { display:flex; gap:4px; background:var(--green-pale); border-radius:12px; padding:4px; }
+  .emotion-tab { padding:8px 20px; border-radius:10px; font-size:0.85rem; font-weight:600; cursor:pointer; border:none; background:transparent; font-family:'Sora',sans-serif; color:var(--text-muted); transition:var(--transition); }
+  .emotion-tab.active { background:white; color:var(--green); box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+  .journal-day { margin-bottom:24px; }
+  .journal-day-label { font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .journal-entry { display:flex; align-items:center; gap:14px; background:white; border-radius:12px; padding:14px 18px; border:1px solid var(--border); margin-bottom:8px; transition:var(--transition); }
+  .journal-entry:hover { border-color:var(--green-light); }
+  .emotion-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+  .entry-info { flex:1; }
+  .entry-emotion { font-weight:600; font-size:0.95rem; }
+  .entry-intensity { display:flex; gap:3px; margin-top:3px; }
+  .intensity-dot { width:8px; height:8px; border-radius:50%; background:var(--green-light); }
+  .intensity-dot.empty { background:var(--border); }
+  .entry-time { font-size:0.8rem; color:var(--text-muted); }
+  .entry-comment { font-size:0.82rem; color:var(--text-muted); margin-top:2px; font-style:italic; }
+  .add-btn { display:flex; align-items:center; gap:8px; background:var(--green); color:white; border:none; border-radius:12px; padding:12px 20px; font-family:'Sora',sans-serif; font-weight:600; font-size:0.9rem; cursor:pointer; transition:var(--transition); }
+  .add-btn:hover { background:var(--green-mid); transform:translateY(-1px); }
+
+  /* REPORTS */
+  .reports-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:28px; }
+  .report-stat { background:white; border-radius:14px; border:1px solid var(--border); padding:20px; text-align:center; }
+  .report-stat .rs-num { font-family:'DM Serif Display',serif; font-size:2.2rem; color:var(--green); }
+  .report-stat .rs-label { font-size:0.82rem; color:var(--text-muted); margin-top:4px; font-weight:500; }
+  .chart-container { background:white; border-radius:var(--radius); border:1px solid var(--border); padding:24px; }
+  .chart-title { font-weight:600; margin-bottom:20px; }
+  .bar-chart { display:flex; align-items:flex-end; gap:8px; height:120px; }
+  .bar-wrap { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; }
+  .bar { width:100%; background:var(--green-light); border-radius:6px 6px 0 0; transition:var(--transition); min-height:4px; }
+  .bar-wrap:hover .bar { background:var(--green); }
+  .bar-label { font-size:0.7rem; color:var(--text-muted); font-weight:500; }
+  .emotion-legend { display:flex; gap:16px; flex-wrap:wrap; margin-top:20px; }
+  .legend-item { display:flex; align-items:center; gap:6px; font-size:0.82rem; color:var(--text-muted); }
+  .legend-dot { width:10px; height:10px; border-radius:50%; }
+
+  /* AUTH */
+  .auth-page { display:flex; align-items:center; justify-content:center; min-height:calc(100vh - 64px); padding:24px; }
+  .auth-card { background:white; border-radius:20px; border:1px solid var(--border); padding:40px; width:100%; max-width:420px; box-shadow:var(--shadow-lg); }
+  .auth-logo { text-align:center; margin-bottom:28px; }
+  .auth-logo svg { width:52px; height:52px; }
+  .auth-card h2 { font-family:'DM Serif Display',serif; font-size:1.7rem; text-align:center; margin-bottom:6px; }
+  .auth-card p.sub { text-align:center; color:var(--text-muted); font-size:0.88rem; margin-bottom:28px; }
+  .form-group { margin-bottom:18px; }
+  .form-group label { display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px; }
+  .form-group input, .form-group select, .form-group textarea { width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid var(--border); font-family:'Sora',sans-serif; font-size:0.9rem; outline:none; transition:var(--transition); background:var(--bg); color:var(--text); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--green); background:white; }
+  .form-group textarea { resize:vertical; min-height:80px; }
+  .btn-full { width:100%; padding:14px; border-radius:12px; background:var(--green); color:white; border:none; font-family:'Sora',sans-serif; font-weight:700; font-size:1rem; cursor:pointer; transition:var(--transition); }
+  .btn-full:hover { background:var(--green-mid); }
+  .auth-switch { text-align:center; margin-top:20px; font-size:0.85rem; color:var(--text-muted); }
+  .auth-switch a { color:var(--green); font-weight:600; cursor:pointer; }
+  .demo-accounts { background:var(--green-pale); border-radius:10px; padding:12px 16px; margin-top:16px; font-size:0.82rem; }
+  .demo-accounts strong { display:block; margin-bottom:4px; color:var(--green); }
+
+  /* ADMIN */
+  .admin-layout { display:flex; min-height:calc(100vh - 64px); }
+  .admin-sidebar { width:220px; flex-shrink:0; background:var(--green); padding:24px 0; }
+  .admin-sidebar-item { display:flex; align-items:center; gap:10px; padding:12px 20px; color:rgba(255,255,255,0.7); font-size:0.88rem; font-weight:500; cursor:pointer; transition:var(--transition); }
+  .admin-sidebar-item:hover, .admin-sidebar-item.active { background:rgba(255,255,255,0.12); color:white; }
+  .admin-sidebar-item span { font-size:1rem; }
+  .admin-content { flex:1; padding:32px; overflow-y:auto; }
+  .admin-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-bottom:28px; }
+  .admin-stat { background:white; border-radius:14px; border:1px solid var(--border); padding:20px; }
+  .admin-stat .as-num { font-family:'DM Serif Display',serif; font-size:2rem; color:var(--green); }
+  .admin-stat .as-label { font-size:0.82rem; color:var(--text-muted); margin-top:2px; font-weight:500; }
+  .admin-stat .as-icon { font-size:1.4rem; margin-bottom:8px; }
+  .table-wrap { background:white; border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; }
+  table { width:100%; border-collapse:collapse; font-size:0.88rem; }
+  thead { background:var(--bg); }
+  th { padding:12px 16px; text-align:left; font-weight:700; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); border-bottom:1px solid var(--border); }
+  td { padding:14px 16px; border-bottom:1px solid var(--border); }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:var(--bg); }
+  .badge { display:inline-block; padding:3px 10px; border-radius:100px; font-size:0.75rem; font-weight:700; }
+  .badge-green { background:var(--green-pale); color:var(--green); }
+  .badge-orange { background:#FEF0E7; color:var(--accent2); }
+  .badge-gray { background:#F0F0F0; color:#888; }
+  .action-btns { display:flex; gap:8px; }
+  .btn-sm { padding:5px 12px; border-radius:8px; font-family:'Sora',sans-serif; font-size:0.78rem; font-weight:600; cursor:pointer; border:none; transition:var(--transition); }
+  .btn-edit { background:var(--green-pale); color:var(--green); }
+  .btn-delete { background:#FFE8E8; color:var(--danger); }
+  .btn-edit:hover { background:var(--green); color:white; }
+  .btn-delete:hover { background:var(--danger); color:white; }
+  .admin-section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .admin-section-header h3 { font-size:1rem; font-weight:700; }
+
+  /* MODAL */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:200; align-items:center; justify-content:center; padding:24px; backdrop-filter:blur(4px); }
+  .modal-overlay.open { display:flex; animation:fadeIn 0.2s ease; }
+  .modal { background:white; border-radius:20px; padding:32px; width:100%; max-width:480px; box-shadow:var(--shadow-lg); }
+  .modal h3 { font-family:'DM Serif Display',serif; font-size:1.4rem; margin-bottom:4px; }
+  .modal .modal-sub { color:var(--text-muted); font-size:0.88rem; margin-bottom:24px; }
+  .modal-footer { display:flex; gap:12px; justify-content:flex-end; margin-top:24px; }
+  .btn-cancel { background:var(--bg); color:var(--text); border:1.5px solid var(--border); border-radius:10px; padding:10px 20px; font-family:'Sora',sans-serif; font-weight:600; cursor:pointer; font-size:0.9rem; transition:var(--transition); }
+  .btn-cancel:hover { border-color:var(--green); }
+  .btn-confirm { background:var(--green); color:white; border:none; border-radius:10px; padding:10px 24px; font-family:'Sora',sans-serif; font-weight:600; cursor:pointer; font-size:0.9rem; transition:var(--transition); }
+  .btn-confirm:hover { background:var(--green-mid); }
+
+  /* EMOTION PICKER */
+  .emotion-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px; }
+  .emotion-pill { padding:10px 8px; border-radius:12px; border:2px solid var(--border); text-align:center; cursor:pointer; font-size:0.8rem; font-weight:600; transition:var(--transition); }
+  .emotion-pill:hover { border-color:var(--green-light); background:var(--green-pale); }
+  .emotion-pill.selected { border-color:var(--green); background:var(--green-pale); color:var(--green); }
+  .emotion-pill .ep-emoji { display:block; font-size:1.4rem; margin-bottom:4px; }
+  .intensity-slider { width:100%; margin:8px 0; accent-color:var(--green); }
+
+  /* PROFILE */
+  .profile-grid { display:grid; grid-template-columns:280px 1fr; gap:24px; }
+  .profile-card { text-align:center; }
+  .profile-avatar { width:88px; height:88px; background:var(--green-pale); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; font-weight:700; color:var(--green); margin:0 auto 16px; border:3px solid var(--green-light); }
+  .profile-name { font-family:'DM Serif Display',serif; font-size:1.4rem; }
+  .profile-role { font-size:0.82rem; color:var(--text-muted); margin-top:4px; margin-bottom:20px; }
+  .profile-stats { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .profile-stat-item { background:var(--green-pale); border-radius:10px; padding:14px; text-align:center; }
+  .profile-stat-item .psi-num { font-weight:700; font-size:1.3rem; color:var(--green); }
+  .profile-stat-item .psi-label { font-size:0.78rem; color:var(--text-muted); margin-top:2px; }
+
+  /* TOAST */
+  .toast { position:fixed; bottom:24px; right:24px; background:var(--green); color:white; padding:14px 20px; border-radius:12px; font-size:0.88rem; font-weight:600; z-index:300; animation:slideUp 0.3s ease; display:none; box-shadow:var(--shadow-lg); }
+  .toast.show { display:flex; align-items:center; gap:8px; }
+  @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:none;opacity:1} }
+
+  /* RESPONSIVE */
+  @media(max-width:768px) {
+    nav { padding:0 16px; }
+    .nav-links { display:none; }
+    .profile-grid { grid-template-columns:1fr; }
+    .admin-sidebar { display:none; }
+    .hero h1 { font-size:2rem; }
+    .stats-row { gap:24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <svg viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="8" r="5" fill="#52B788"/>
+      <rect x="15" y="14" width="10" height="10" rx="2" transform="rotate(45 20 19)" fill="#2D6A4F"/>
+      <path d="M10 30 Q20 22 30 30" stroke="#52B788" stroke-width="3" stroke-linecap="round" fill="none"/>
+    </svg>
+    CESIZen
+  </div>
+  <div class="nav-links" id="navLinks">
+    <button onclick="showPage('home')" id="nav-home" class="active">Accueil</button>
+    <button onclick="showPage('informations')" id="nav-informations">Informations</button>
+    <button onclick="showPage('tracker')" id="nav-tracker" class="logged-only" style="display:none">Mon Tracker</button>
+    <button onclick="showPage('profile')" id="nav-profile" class="logged-only" style="display:none">Mon Profil</button>
+    <button onclick="showPage('admin')" id="nav-admin" class="admin-only" style="display:none">Administration</button>
+  </div>
+  <div id="navAuth">
+    <button class="btn nav-links" onclick="showPage('login')" style="background:none;border:1.5px solid var(--border);padding:8px 16px;border-radius:10px;font-family:Sora,sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;">Connexion</button>
+  </div>
+  <div id="navUser" class="nav-user" style="display:none">
+    <div class="avatar" id="userAvatar" onclick="showPage('profile')">C</div>
+    <button onclick="logout()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-family:Sora,sans-serif;font-size:0.85rem;font-weight:500;">Déconnexion</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-badge">🏥 Projet gouvernemental · Ministère de la Santé</div>
+    <h1>Prenez soin de votre <span>santé mentale</span></h1>
+    <p>CESIZen vous accompagne au quotidien dans la gestion du stress et l'amélioration de votre bien-être émotionnel.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary" onclick="showPage('login')">Commencer gratuitement</button>
+      <button class="btn btn-secondary" onclick="showPage('informations')">📚 Découvrir les ressources</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">10 000+</div><div class="stat-label">Utilisateurs actifs</div></div>
+      <div class="stat"><div class="stat-num">500K+</div><div class="stat-label">Émotions suivies</div></div>
+      <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Ressources disponibles</div></div>
+      <div class="stat"><div class="stat-num">98%</div><div class="stat-label">Satisfaction</div></div>
+    </div>
+  </div>
+  <div class="features-section">
+    <h2 class="section-title">Fonctionnalités principales</h2>
+    <p class="section-sub">Des outils simples et efficaces pour mieux comprendre et gérer vos émotions.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feat-icon green">📊</div>
+        <h3>Tracker d'émotions</h3>
+        <p>Suivez vos émotions au quotidien avec un journal de bord structuré et visualisez vos tendances sur le long terme.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon orange">📚</div>
+        <h3>Ressources de prévention</h3>
+        <p>Accédez à des contenus de qualité sur la santé mentale, les techniques de respiration et les activités de détente.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon blue">🔒</div>
+        <h3>Données sécurisées</h3>
+        <p>Vos données de santé mentale sont protégées conformément au RGPD, hébergées exclusivement en Union Européenne.</p>
+      </div>
+    </div>
+    <div style="background:var(--green);color:white;border-radius:20px;padding:48px 32px;margin-top:48px;text-align:center;">
+      <h2 style="font-family:'DM Serif Display',serif;font-size:1.8rem;margin-bottom:12px;">Rejoignez notre communauté</h2>
+      <p style="opacity:0.85;margin-bottom:24px;">Commencez votre parcours vers un meilleur équilibre émotionnel dès aujourd'hui.</p>
+      <button class="btn" style="background:white;color:var(--green);font-weight:700;" onclick="showPage('register')">Créer mon compte</button>
+    </div>
+  </div>
+</div>
+
+<!-- INFORMATIONS -->
+<div id="page-informations" class="page">
+  <div class="container">
+    <div class="page-header">
+      <h2>Ressources de prévention</h2>
+      <p>Découvrez nos contenus et exercices pour mieux comprendre et gérer votre stress au quotidien.</p>
+    </div>
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" placeholder="Rechercher une ressource..." id="searchInput" oninput="filterResources()">
+    </div>
+    <div class="info-tabs">
+      <button class="tab-btn active" onclick="filterTab(this,'all')">Toutes</button>
+      <button class="tab-btn" onclick="filterTab(this,'prevention')">Prévention</button>
+      <button class="tab-btn" onclick="filterTab(this,'exercise')">Exercices</button>
+    </div>
+    <div class="info-grid" id="infoGrid">
+      <div class="info-card" data-cat="prevention">
+        <div class="info-card-img prevention">🧠</div>
+        <div class="info-card-body">
+          <span class="info-tag tag-prevention">Prévention</span>
+          <h3>Comprendre le stress</h3>
+          <p>Le stress est une réaction naturelle de l'organisme face à une situation perçue comme menaçante ou exigeante…</p>
+          <span class="read-more">Lire la suite →</span>
+        </div>
+      </div>
+      <div class="info-card" data-cat="exercise">
+        <div class="info-card-img exercise">💨</div>
+        <div class="info-card-body">
+          <span class="info-tag tag-exercise">Exercices</span>
+          <h3>Techniques de respiration</h3>
+          <p>La respiration consciente est un outil puissant pour gérer le stress et l'anxiété au quotidien…</p>
+          <span class="read-more">Lire la suite →</span>
+        </div>
+      </div>
+      <div class="info-card" data-cat="prevention">
+        <div class="info-card-img prevention">💚</div>
+        <div class="info-card-body">
+          <span class="info-tag tag-prevention">Prévention</span>
+          <h3>Importance de la santé mentale</h3>
+          <p>La santé mentale est aussi importante que la santé physique. Elle influence notre façon de penser…</p>
+          <span class="read-more">Lire la suite →</span>
+        </div>
+      </div>
+      <div class="info-card" data-cat="exercise">
+        <div class="info-card-img exercise">🏃</div>
+        <div class="info-card-body">
+          <span class="info-tag tag-exercise">Exercices</span>
+          <h3>Activités de détente</h3>
+          <p>Intégrer des activités relaxantes dans votre routine quotidienne peut considérablement améliorer votre bien-être…</p>
+          <span class="read-more">Lire la suite →</span>
+        </div>
+      </div>
+      <div class="info-card" data-cat="prevention">
+        <div class="info-card-img prevention">😴</div>
+        <div class="info-card-body">
+          <span class="info-tag tag-prevention">Prévention</span>
+          <h3>Le rôle du sommeil</h3>
+          <p>Un sommeil de qualité est fondamental pour la régulation émotionnelle et la résistance au stress chronique…</p>
+          <span class="read-more">Lire la suite →</span>
+        </div>
+      </div>
+      <div class="info-card" data-cat="exercise">
+        <div class="info-card-img exercise">🧘</div>
+        <div class="info-card-body">
+          <span class="info-tag tag-exercise">Exercices</span>
+          <h3>Méditation pleine conscience</h3>
+          <p>La pratique régulière de la méditation aide à réduire l'anxiété et à développer une meilleure gestion des émotions…</p>
+          <span class="read-more">Lire la suite →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRACKER -->
+<div id="page-tracker" class="page">
+  <div class="container">
+    <div class="tracker-header">
+      <div>
+        <h2 style="font-family:'DM Serif Display',serif;font-size:1.9rem;">Mon Tracker d'Émotions</h2>
+        <p style="color:var(--text-muted);margin-top:4px;">Suivez votre état émotionnel au quotidien</p>
+      </div>
+      <button class="add-btn" onclick="openAddModal()">+ Nouvelle entrée</button>
+    </div>
+    <div class="emotion-tabs">
+      <button class="emotion-tab active" onclick="switchTrackerTab(this,'journal')">📅 Historique</button>
+      <button class="emotion-tab" onclick="switchTrackerTab(this,'reports')">📊 Rapports</button>
+    </div>
+    
+    <!-- JOURNAL -->
+    <div id="tab-journal" style="margin-top:24px;">
+      <div class="journal-day">
+        <div class="journal-day-label">Aujourd'hui — mercredi 2 avril 2025</div>
+        <div class="journal-entry">
+          <div class="emotion-dot" style="background:#52B788;"></div>
+          <div class="entry-info">
+            <div class="entry-emotion">Joie</div>
+            <div class="entry-intensity">
+              <div class="intensity-dot"></div><div class="intensity-dot"></div><div class="intensity-dot empty"></div><div class="intensity-dot empty"></div><div class="intensity-dot empty"></div>
+            </div>
+            <div class="entry-comment">Bonne journée au travail</div>
+          </div>
+          <div class="entry-time">13:40</div>
+        </div>
+      </div>
+      <div class="journal-day">
+        <div class="journal-day-label">Mardi 1 avril 2025</div>
+        <div class="journal-entry">
+          <div class="emotion-dot" style="background:#F4A261;"></div>
+          <div class="entry-info">
+            <div class="entry-emotion">Frustration</div>
+            <div class="entry-intensity">
+              <div class="intensity-dot"></div><div class="intensity-dot"></div><div class="intensity-dot"></div><div class="intensity-dot empty"></div><div class="intensity-dot empty"></div>
+            </div>
+          </div>
+          <div class="entry-time">18:20</div>
+        </div>
+        <div class="journal-entry">
+          <div class="emotion-dot" style="background:#4A90D9;"></div>
+          <div class="entry-info">
+            <div class="entry-emotion">Sérénité</div>
+            <div class="entry-intensity">
+              <div class="intensity-dot"></div><div class="intensity-dot"></div><div class="intensity-dot"></div><div class="intensity-dot"></div><div class="intensity-dot empty"></div>
+            </div>
+            <div class="entry-comment">Méditation du matin</div>
+          </div>
+          <div class="entry-time">08:00</div>
+        </div>
+      </div>
+      <div class="journal-day">
+        <div class="journal-day-label">Lundi 31 mars 2025</div>
+        <div class="journal-entry">
+          <div class="emotion-dot" style="background:#9B59B6;"></div>
+          <div class="entry-info">
+            <div class="entry-emotion">Tristesse</div>
+            <div class="entry-intensity">
+              <div class="intensity-dot"></div><div class="intensity-dot"></div><div class="intensity-dot"></div><div class="intensity-dot"></div><div class="intensity-dot"></div>
+            </div>
+          </div>
+          <div class="entry-time">21:00</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- REPORTS -->
+    <div id="tab-reports" style="margin-top:24px;display:none;">
+      <div class="reports-grid">
+        <div class="report-stat"><div class="rs-num">12</div><div class="rs-label">Entrées ce mois</div></div>
+        <div class="report-stat"><div class="rs-num">😊</div><div class="rs-label">Émotion dominante : Joie</div></div>
+        <div class="report-stat"><div class="rs-num">3.2</div><div class="rs-label">Intensité moyenne</div></div>
+        <div class="report-stat"><div class="rs-num">7</div><div class="rs-label">Jours actifs</div></div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">Répartition des émotions — Semaine en cours</div>
+        <div class="bar-chart">
+          <div class="bar-wrap">
+            <div class="bar" style="height:70%;background:#52B788;"></div>
+            <div class="bar-label">Joie</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar" style="height:40%;background:#F4A261;"></div>
+            <div class="bar-label">Frustration</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar" style="height:55%;background:#4A90D9;"></div>
+            <div class="bar-label">Sérénité</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar" style="height:25%;background:#9B59B6;"></div>
+            <div class="bar-label">Tristesse</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar" style="height:35%;background:#E05252;"></div>
+            <div class="bar-label">Anxiété</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar" style="height:20%;background:#F1C40F;"></div>
+            <div class="bar-label">Surprise</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar" style="height:60%;background:#1ABC9C;"></div>
+            <div class="bar-label">Calme</div>
+          </div>
+        </div>
+        <div class="emotion-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#52B788"></div>Joie</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#F4A261"></div>Frustration</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#4A90D9"></div>Sérénité</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#9B59B6"></div>Tristesse</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#E05252"></div>Anxiété</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#1ABC9C"></div>Calme</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div id="page-profile" class="page">
+  <div class="container">
+    <div class="page-header"><h2>Mon Profil</h2></div>
+    <div class="profile-grid">
+      <div>
+        <div class="card profile-card">
+          <div class="profile-avatar">CD</div>
+          <div class="profile-name">Corentin D.</div>
+          <div class="profile-role">Utilisateur · Membre depuis jan. 2025</div>
+          <div class="profile-stats">
+            <div class="profile-stat-item"><div class="psi-num">28</div><div class="psi-label">Entrées totales</div></div>
+            <div class="profile-stat-item"><div class="psi-num">18</div><div class="psi-label">Jours actifs</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3 style="font-weight:700;margin-bottom:20px;">Informations personnelles</h3>
+          <div class="form-group"><label>Prénom</label><input type="text" value="Corentin"></div>
+          <div class="form-group"><label>Nom</label><input type="text" value="Dapremont"></div>
+          <div class="form-group"><label>Email</label><input type="email" value="corentin@example.fr"></div>
+          <div class="form-group"><label>Ville</label><input type="text" value="Paris"></div>
+          <div style="display:flex;gap:12px;margin-top:8px;">
+            <button class="btn btn-primary" onclick="showToast('✅ Profil mis à jour !')">Sauvegarder</button>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px;border-color:#FFE8E8;">
+          <h3 style="font-weight:700;margin-bottom:8px;color:var(--danger);">Zone de danger</h3>
+          <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:16px;">La suppression de votre compte entraîne l'effacement irréversible de toutes vos données (conformité RGPD).</p>
+          <button class="btn-sm btn-delete" style="padding:10px 20px;" onclick="showToast('⚠️ Fonctionnalité disponible en production')">Supprimer mon compte</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="page-admin" class="page">
+  <div class="admin-layout">
+    <div class="admin-sidebar">
+      <div style="padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,0.15);margin-bottom:8px;">
+        <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Administration</div>
+        <div style="color:white;font-weight:600;font-size:0.9rem;">CESIZen</div>
+      </div>
+      <div class="admin-sidebar-item active" onclick="switchAdmin(this,'dashboard')"><span>📊</span> Tableau de bord</div>
+      <div class="admin-sidebar-item" onclick="switchAdmin(this,'pages')"><span>📄</span> Pages d'information</div>
+      <div class="admin-sidebar-item" onclick="switchAdmin(this,'emotions')"><span>💚</span> Émotions</div>
+      <div class="admin-sidebar-item" onclick="switchAdmin(this,'users')"><span>👥</span> Utilisateurs</div>
+    </div>
+    <div class="admin-content">
+      <!-- DASHBOARD -->
+      <div id="admin-dashboard">
+        <h2 style="font-family:'DM Serif Display',serif;font-size:1.6rem;margin-bottom:20px;">Tableau de bord</h2>
+        <div class="admin-stats">
+          <div class="admin-stat"><div class="as-icon">👥</div><div class="as-num">1,234</div><div class="as-label">Utilisateurs actifs</div></div>
+          <div class="admin-stat"><div class="as-icon">📄</div><div class="as-num">4</div><div class="as-label">Ressources publiées</div></div>
+          <div class="admin-stat"><div class="as-icon">💚</div><div class="as-num">15</div><div class="as-label">Émotions configurées</div></div>
+          <div class="admin-stat"><div class="as-icon">📝</div><div class="as-num">12,450</div><div class="as-label">Entrées totales</div></div>
+        </div>
+        <div class="table-wrap">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);font-weight:700;">Activité récente</div>
+          <table>
+            <thead><tr><th>Utilisateur</th><th>Action</th><th>Date</th><th>Statut</th></tr></thead>
+            <tbody>
+              <tr><td>user@cesizen.fr</td><td>Nouvelle entrée journal</td><td>Aujourd'hui 13:40</td><td><span class="badge badge-green">Succès</span></td></tr>
+              <tr><td>alice@example.fr</td><td>Création de compte</td><td>Aujourd'hui 11:22</td><td><span class="badge badge-green">Succès</span></td></tr>
+              <tr><td>bob@example.fr</td><td>Réinitialisation mot de passe</td><td>Hier 18:05</td><td><span class="badge badge-orange">En attente</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- PAGES -->
+      <div id="admin-pages" style="display:none;">
+        <div class="admin-section-header">
+          <h3>Gestion des pages d'information</h3>
+          <button class="btn btn-primary" style="font-size:0.85rem;padding:10px 18px;" onclick="showToast('📄 Nouvelle page créée !')">+ Nouvelle page</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Titre</th><th>Catégorie</th><th>Statut</th><th>Modifié le</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td>Comprendre le stress</td><td><span class="badge badge-green">Prévention</span></td><td><span class="badge badge-green">Publié</span></td><td>01/01/2025</td><td><div class="action-btns"><button class="btn-sm btn-edit">Modifier</button><button class="btn-sm btn-delete">Supprimer</button></div></td></tr>
+              <tr><td>Techniques de respiration</td><td><span class="badge badge-orange">Exercices</span></td><td><span class="badge badge-green">Publié</span></td><td>02/01/2025</td><td><div class="action-btns"><button class="btn-sm btn-edit">Modifier</button><button class="btn-sm btn-delete">Supprimer</button></div></td></tr>
+              <tr><td>Importance de la santé mentale</td><td><span class="badge badge-green">Prévention</span></td><td><span class="badge badge-green">Publié</span></td><td>03/01/2025</td><td><div class="action-btns"><button class="btn-sm btn-edit">Modifier</button><button class="btn-sm btn-delete">Supprimer</button></div></td></tr>
+              <tr><td>Activités de détente</td><td><span class="badge badge-orange">Exercices</span></td><td><span class="badge badge-green">Publié</span></td><td>04/01/2025</td><td><div class="action-btns"><button class="btn-sm btn-edit">Modifier</button><button class="btn-sm btn-delete">Supprimer</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- EMOTIONS -->
+      <div id="admin-emotions" style="display:none;">
+        <div class="admin-section-header">
+          <h3>Référentiel d'émotions</h3>
+          <button class="btn btn-primary" style="font-size:0.85rem;padding:10px 18px;" onclick="showToast('💚 Émotion ajoutée !')">+ Ajouter</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Émotion (Niveau 1)</th><th>Sous-émotions (Niveau 2)</th><th>Couleur</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Joie</strong></td><td>Bonheur, Enthousiasme, Fierté, Gratitude</td><td><div style="width:20px;height:20px;border-radius:50%;background:#52B788;"></div></td><td><div class="action-btns"><button class="btn-sm btn-edit">Modifier</button><button class="btn-sm btn-delete">Supprimer</button></div></td></tr>
+              <tr><td><strong>Tristesse</strong></td><td>Mélancolie, Déception, Chagrin</td><td><div style="width:20px;height:20px;border-radius:50%;background:#9B59B6;"></div></td><td><div class="action-btns"><button class="btn-sm btn-edit">Modifier</button><button class="btn-sm btn-delete">Supprimer</button></div></td></tr>
+              <tr><td><strong>Anxiété</strong></td><td>Peur, Inquiétude, Nervosité, Stress</td><td><div style="width:20px;height:20px;border-radius:50%;background:#E05252;"></div></td><td><div class="action-btns"><button class="btn-sm btn-edit">Modifier</button><button class="btn-sm btn-delete">Supprimer</button></div></td></tr>
+              <tr><td><strong>Sérénité</strong></td><td>Calme, Paix, Satisfaction, Bien-être</td><td><div style="width:20px;height:20px;border-radius:50%;background:#4A90D9;"></div></td><td><div class="action-btns"><button class="btn-sm btn-edit">Modifier</button><button class="btn-sm btn-delete">Supprimer</button></div></td></tr>
+              <tr><td><strong>Frustration</strong></td><td>Colère, Irritation, Impatience</td><td><div style="width:20px;height:20px;border-radius:50%;background:#F4A261;"></div></td><td><div class="action-btns"><button class="btn-sm btn-edit">Modifier</button><button class="btn-sm btn-delete">Supprimer</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- USERS -->
+      <div id="admin-users" style="display:none;">
+        <div class="admin-section-header">
+          <h3>Gestion des utilisateurs</h3>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Utilisateur</th><th>Email</th><th>Rôle</th><th>Inscrit le</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td>Corentin D.</td><td>admin@cesizen.fr</td><td><span class="badge badge-green">Admin</span></td><td>17/10/2024</td><td><div class="action-btns"><button class="btn-sm btn-edit">Modifier</button></div></td></tr>
+            <tr><td>Alice M.</td><td>alice@example.fr</td><td><span class="badge badge-gray">Utilisateur</span></td><td>05/01/2025</td><td><div class="action-btns"><button class="btn-sm btn-edit">Modifier</button><button class="btn-sm btn-delete" onclick="showToast('🗑️ Compte supprimé')">Supprimer</button></div></td></tr>
+            <tr><td>Bob L.</td><td>bob@example.fr</td><td><span class="badge badge-gray">Utilisateur</span></td><td>12/01/2025</td><td><div class="action-btns"><button class="btn-sm btn-edit">Modifier</button><button class="btn-sm btn-delete" onclick="showToast('🗑️ Compte supprimé')">Supprimer</button></div></td></tr>
+          </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="page-login" class="page">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="8" r="5" fill="#52B788"/><rect x="15" y="14" width="10" height="10" rx="2" transform="rotate(45 20 19)" fill="#2D6A4F"/><path d="M10 30 Q20 22 30 30" stroke="#52B788" stroke-width="3" stroke-linecap="round" fill="none"/></svg>
+      </div>
+      <h2>Connexion</h2>
+      <p class="sub">Connectez-vous à votre espace CESIZen</p>
+      <div class="form-group"><label>Email</label><input type="email" id="loginEmail" value="user@cesizen.fr" placeholder="votre-email@exemple.fr"></div>
+      <div class="form-group"><label>Mot de passe <a href="#" style="color:var(--green);font-size:0.8rem;float:right;font-weight:500;">Mot de passe oublié ?</a></label><input type="password" id="loginPassword" value="password" placeholder="••••••••"></div>
+      <button class="btn-full" onclick="login()">Se connecter</button>
+      <div class="demo-accounts">
+        <strong>Comptes de démonstration :</strong>
+        • Utilisateur : user@cesizen.fr / password<br>
+        • Administrateur : admin@cesizen.fr / password
+      </div>
+      <div class="auth-switch">Pas encore de compte ? <a onclick="showPage('register')">Créer un compte</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div id="page-register" class="page">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="8" r="5" fill="#52B788"/><rect x="15" y="14" width="10" height="10" rx="2" transform="rotate(45 20 19)" fill="#2D6A4F"/><path d="M10 30 Q20 22 30 30" stroke="#52B788" stroke-width="3" stroke-linecap="round" fill="none"/></svg>
+      </div>
+      <h2>Créer un compte</h2>
+      <p class="sub">Rejoignez la communauté CESIZen</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group"><label>Prénom</label><input type="text" placeholder="Prénom"></div>
+        <div class="form-group"><label>Nom</label><input type="text" placeholder="Nom"></div>
+      </div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="votre-email@exemple.fr"></div>
+      <div class="form-group"><label>Mot de passe</label><input type="password" placeholder="••••••••"></div>
+      <div class="form-group"><label>Ville (optionnel)</label><input type="text" placeholder="Paris"></div>
+      <div style="background:var(--green-pale);border-radius:10px;padding:12px;font-size:0.8rem;color:var(--text-muted);margin-bottom:16px;">
+        🔒 Vos données sont protégées conformément au RGPD. Hébergement exclusivement en Union Européenne.
+      </div>
+      <button class="btn-full" onclick="showToast('✅ Compte créé ! Vous pouvez maintenant vous connecter.');showPage('login')">Créer mon compte</button>
+      <div class="auth-switch">Déjà un compte ? <a onclick="showPage('login')">Se connecter</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ADD EMOTION -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h3>Ajouter une émotion</h3>
+    <p class="modal-sub">Comment vous sentez-vous en ce moment ?</p>
+    <div class="form-group">
+      <label>Émotion principale (Niveau 1)</label>
+      <div class="emotion-grid">
+        <div class="emotion-pill selected" onclick="selectEmotion(this)"><span class="ep-emoji">😊</span>Joie</div>
+        <div class="emotion-pill" onclick="selectEmotion(this)"><span class="ep-emoji">😢</span>Tristesse</div>
+        <div class="emotion-pill" onclick="selectEmotion(this)"><span class="ep-emoji">😰</span>Anxiété</div>
+        <div class="emotion-pill" onclick="selectEmotion(this)"><span class="ep-emoji">😌</span>Sérénité</div>
+        <div class="emotion-pill" onclick="selectEmotion(this)"><span class="ep-emoji">😠</span>Frustration</div>
+        <div class="emotion-pill" onclick="selectEmotion(this)"><span class="ep-emoji">😮</span>Surprise</div>
+        <div class="emotion-pill" onclick="selectEmotion(this)"><span class="ep-emoji">🤗</span>Gratitude</div>
+        <div class="emotion-pill" onclick="selectEmotion(this)"><span class="ep-emoji">😴</span>Fatigue</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Intensité : <span id="intensityVal">3</span>/5</label>
+      <input type="range" class="intensity-slider" min="1" max="5" value="3" oninput="document.getElementById('intensityVal').textContent=this.value">
+    </div>
+    <div class="form-group">
+      <label>Commentaire (optionnel)</label>
+      <textarea placeholder="Décrivez ce que vous ressentez..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-confirm" onclick="addEntry()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ Action effectuée</div>
+
+<script>
+  let currentUser = null;
+
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    document.querySelectorAll('.nav-links button[id^="nav-"]').forEach(b => b.classList.remove('active'));
+    const nb = document.getElementById('nav-' + id);
+    if (nb) nb.classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  function login() {
+    const email = document.getElementById('loginEmail').value;
+    const pass = document.getElementById('loginPassword').value;
+    const isAdmin = email === 'admin@cesizen.fr' && pass === 'password';
+    const isUser = email === 'user@cesizen.fr' && pass === 'password';
+    if (!isAdmin && !isUser) { showToast('❌ Email ou mot de passe incorrect'); return; }
+    currentUser = { email, isAdmin, name: isAdmin ? 'Admin' : 'Corentin' };
+    document.getElementById('navAuth').style.display = 'none';
+    document.getElementById('navUser').style.display = 'flex';
+    document.getElementById('userAvatar').textContent = currentUser.name[0].toUpperCase();
+    document.querySelectorAll('.logged-only').forEach(el => el.style.display = '');
+    if (isAdmin) document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+    showToast('👋 Bienvenue ' + currentUser.name + ' !');
+    showPage(isAdmin ? 'admin' : 'tracker');
+  }
+
+  function logout() {
+    currentUser = null;
+    document.getElementById('navAuth').style.display = '';
+    document.getElementById('navUser').style.display = 'none';
+    document.querySelectorAll('.logged-only').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+    showToast('👋 Déconnexion réussie');
+    showPage('home');
+  }
+
+  function switchTrackerTab(btn, tab) {
+    document.querySelectorAll('.emotion-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-journal').style.display = tab === 'journal' ? '' : 'none';
+    document.getElementById('tab-reports').style.display = tab === 'reports' ? '' : 'none';
+  }
+
+  function switchAdmin(el, section) {
+    document.querySelectorAll('.admin-sidebar-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    ['dashboard','pages','emotions','users'].forEach(s => {
+      document.getElementById('admin-' + s).style.display = s === section ? '' : 'none';
+    });
+  }
+
+  function filterTab(btn, cat) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.info-card').forEach(c => {
+      c.style.display = (cat === 'all' || c.dataset.cat === cat) ? '' : 'none';
+    });
+  }
+
+  function filterResources() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('.info-card').forEach(c => {
+      const text = c.textContent.toLowerCase();
+      c.style.display = text.includes(q) ? '' : 'none';
+    });
+  }
+
+  function openAddModal() { document.getElementById('addModal').classList.add('open'); }
+  function closeModal() { document.getElementById('addModal').classList.remove('open'); }
+
+  function selectEmotion(el) {
+    document.querySelectorAll('.emotion-pill').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function addEntry() {
+    showToast('✅ Émotion enregistrée avec succès !');
+    closeModal();
+    const day = document.querySelector('.journal-day');
+    const entry = document.createElement('div');
+    const selected = document.querySelector('.emotion-pill.selected');
+    const emotion = selected ? selected.textContent.replace(/[\u{1F000}-\u{1FFFF}]/gu,'').trim() : 'Émotion';
+    entry.className = 'journal-entry';
+    entry.innerHTML = `<div class="emotion-dot" style="background:var(--green-light);"></div>
+      <div class="entry-info"><div class="entry-emotion">${emotion}</div>
+      <div class="entry-intensity">${'<div class="intensity-dot"></div>'.repeat(3)}${'<div class="intensity-dot empty"></div>'.repeat(2)}</div></div>
+      <div class="entry-time">${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</div>`;
+    day.appendChild(entry);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  document.getElementById('addModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
+</body>
+</html>

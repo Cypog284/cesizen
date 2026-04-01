@@ -1,0 +1,107 @@
+// This is your Prisma schema file for CESIZen
+// Design Pattern: MVC 3-layer architecture
+// Database: PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── USER ────────────────────────────────────────────────────────────────────
+// Séparation USER / USER_INFO pour conformité RGPD (pseudonymisation)
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  role         Role      @default(USER)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  deletedAt    DateTime? @map("deleted_at") // soft delete RGPD
+
+  userInfo      UserInfo?
+  trackerEntries TrackerEntry[]
+  managedPages   PageInfo[]
+
+  @@map("users")
+}
+
+model UserInfo {
+  id        String  @id @default(uuid())
+  userId    String  @unique @map("user_id")
+  firstName String  @map("first_name")
+  lastName  String  @map("last_name")
+  birthDate DateTime? @map("birth_date")
+  city      String?
+  zipCode   String? @map("zip_code")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_info")
+}
+
+// ─── EMOTIONS ────────────────────────────────────────────────────────────────
+// Relation réflexive pour hiérarchie niveau 1 / niveau 2
+
+model Emotion {
+  id       String  @id @default(uuid())
+  label    String  @unique
+  level    Int     @default(1) // 1 = principal, 2 = sous-émotion
+  color    String  @default("#52B788")
+  parentId String? @map("parent_id")
+
+  parent   Emotion?  @relation("EmotionHierarchy", fields: [parentId], references: [id])
+  children Emotion[] @relation("EmotionHierarchy")
+  entries  TrackerEntry[]
+
+  @@map("emotions")
+}
+
+// ─── TRACKER ─────────────────────────────────────────────────────────────────
+
+model TrackerEntry {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  emotionId   String   @map("emotion_id")
+  intensity   Int      // 1 à 5
+  comment     String?
+  loggedAt    DateTime @default(now()) @map("logged_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  emotion Emotion @relation(fields: [emotionId], references: [id])
+
+  @@map("tracker_entries")
+}
+
+// ─── CONTENT ─────────────────────────────────────────────────────────────────
+
+model PageInfo {
+  id          String      @id @default(uuid())
+  title       String
+  content     String      @db.Text
+  category    PageCategory
+  isPublished Boolean     @default(false) @map("is_published")
+  authorId    String      @map("author_id")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  author User @relation(fields: [authorId], references: [id])
+
+  @@map("page_info")
+}
+
+// ─── ENUMS ───────────────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum PageCategory {
+  PREVENTION
+  EXERCISE
+  INFORMATION
+}

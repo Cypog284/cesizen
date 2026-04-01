@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: cesizen_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cesizen
+      POSTGRES_PASSWORD: cesizen_secret
+      POSTGRES_DB: cesizen_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: cesizen_api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://cesizen:cesizen_secret@postgres:5432/cesizen_db
+      JWT_SECRET: cesizen_jwt_super_secret_2025
+      PORT: 3000
+      NODE_ENV: production
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    container_name: cesizen_web
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
