@@ -47,7 +47,7 @@ export default function InformationsPage() {
           style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.88rem', cursor: 'pointer', marginBottom: '24px' }}>
           ← Retour aux ressources
         </button>
-        <div style={{ background: 'white', borderRadius: 'var(--radius)', border: '1px solid var(--border)', padding: '40px', maxWidth: '720px' }}>
+        <div style={{ background: 'var(--card)', borderRadius: 'var(--radius)', border: '1px solid var(--border)', padding: '40px', maxWidth: '720px' }}>
           <span style={{ display: 'inline-block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', padding: '3px 10px', borderRadius: '100px', marginBottom: '16px', background: CATEGORY_COLORS[selected.category]?.bg, color: CATEGORY_COLORS[selected.category]?.color }}>
             {CATEGORY_LABELS[selected.category]}
           </span>
@@ -69,7 +69,7 @@ export default function InformationsPage() {
       </div>
 
       {/* Search */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'white', border: '1.5px solid var(--border)', borderRadius: '12px', padding: '10px 16px', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--card)', border: '1.5px solid var(--border)', borderRadius: '12px', padding: '10px 16px', marginBottom: '20px' }}>
         <span style={{ color: 'var(--text-muted)' }}>🔍</span>
         <input type="text" placeholder="Rechercher une ressource…" value={search} onChange={e => setSearch(e.target.value)}
           style={{ border: 'none', outline: 'none', flex: 1, fontSize: '0.9rem', background: 'transparent', color: 'var(--text)' }} />
@@ -93,7 +93,7 @@ export default function InformationsPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
             {filtered.map(page => (
               <div key={page.id} onClick={() => setSelected(page)}
-                style={{ background: 'white', borderRadius: 'var(--radius)', border: '1px solid var(--border)', overflow: 'hidden', cursor: 'pointer', transition: 'var(--transition)' }}
+                style={{ background: 'var(--card)', borderRadius: 'var(--radius)', border: '1px solid var(--border)', overflow: 'hidden', cursor: 'pointer', transition: 'var(--transition)' }}
                 onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-3px)', e.currentTarget.style.boxShadow = 'var(--shadow)')}
                 onMouseLeave={e => (e.currentTarget.style.transform = '', e.currentTarget.style.boxShadow = '')}>
                 <div style={{ height: '140px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', background: page.category === 'PREVENTION' ? 'linear-gradient(135deg,#D8F3DC,#B7E4C7)' : 'linear-gradient(135deg,#FEF0E7,#FDDCB4)' }}>

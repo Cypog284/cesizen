@@ -6,6 +6,11 @@
   background: rgba(255,255,255,0.92);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
+  transition: background 0.2s;
+}
+
+[data-theme="dark"] .nav {
+  background: rgba(22,40,32,0.95);
 }
 
 .logo {
@@ -56,7 +61,7 @@
   padding: 8px 18px;
   border-radius: 10px;
   border: 1.5px solid var(--border);
-  background: white;
+  background: var(--card);
   color: var(--text);
   font-size: 0.88rem;
   font-weight: 600;
@@ -64,6 +69,20 @@
   transition: var(--transition);
 }
 .loginBtn:hover { border-color: var(--green); color: var(--green); }
+
+.themeToggle {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: var(--transition);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.themeToggle:hover { border-color: var(--green); color: var(--green); }
 
 .logoutBtn {
   background: none; border: none;

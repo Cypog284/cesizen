@@ -32,6 +32,9 @@ export const authRepository = {
   updateUserInfo: (userId: string, data: { firstName?: string; lastName?: string; city?: string }) =>
     prisma.userInfo.update({ where: { userId }, data }),
 
+  updatePassword: (id: string, passwordHash: string) =>
+    prisma.user.update({ where: { id }, data: { passwordHash } }),
+
   softDelete: (id: string) =>
     prisma.user.update({ where: { id }, data: { deletedAt: new Date() } }),
 };

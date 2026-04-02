@@ -38,5 +38,15 @@ export const authService = {
   updateProfile: (userId: string, data: { firstName?: string; lastName?: string; city?: string }) =>
     authRepository.updateUserInfo(userId, data),
 
+  changePassword: async (id: string, currentPassword: string, newPassword: string) => {
+    const user = await authRepository.findById(id);
+    if (!user) throw new Error('Utilisateur introuvable');
+    const valid = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!valid) throw new Error('Mot de passe actuel incorrect');
+    if (newPassword.length < 8) throw new Error('Le nouveau mot de passe doit faire au moins 8 caractères');
+    const hash = await bcrypt.hash(newPassword, 12);
+    await authRepository.updatePassword(id, hash);
+  },
+
   deleteAccount: (id: string) => authRepository.softDelete(id),
 };

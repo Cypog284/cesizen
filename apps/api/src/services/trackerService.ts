@@ -11,4 +11,6 @@ export const trackerService = {
   deleteEntry: (id: string, userId: string) => trackerRepository.deleteEntry(id, userId),
 
   getReport: (userId: string) => trackerRepository.getStats(userId),
+  getStreak: (userId: string) => trackerRepository.getStreak(userId),
+  getChart30Days: (userId: string) => trackerRepository.getChart30Days(userId),
 };

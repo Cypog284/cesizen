@@ -1,10 +1,12 @@
 import { ReactNode } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../hooks/useTheme';
 import styles from './Layout.module.css';
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { user, logout, isAdmin } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -30,6 +32,9 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
 
         <div className={styles.navRight}>
+          <button onClick={toggleTheme} className={styles.themeToggle} title={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}>
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
           {user ? (
             <>
               <Link to="/profile" className={styles.avatar} title="Mon profil">

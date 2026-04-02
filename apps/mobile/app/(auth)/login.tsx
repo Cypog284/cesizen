@@ -3,7 +3,7 @@ import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
   KeyboardAvoidingView, Platform, ActivityIndicator, Alert,
 } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useAuth } from '../../src/hooks/useAuth';
 
 export default function LoginScreen() {
@@ -20,6 +20,7 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       await login(email.trim().toLowerCase(), password);
+      router.replace('/(tabs)');
     } catch (err: any) {
       const msg = err.response?.data?.message || 'Email ou mot de passe incorrect.';
       Alert.alert('Connexion échouée', msg);

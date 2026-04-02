@@ -3,7 +3,7 @@ import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
   KeyboardAvoidingView, Platform, ActivityIndicator, Alert, ScrollView,
 } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useAuth } from '../../src/hooks/useAuth';
 
 export default function RegisterScreen() {
@@ -31,6 +31,7 @@ export default function RegisterScreen() {
         password: form.password,
         city: form.city.trim() || undefined,
       });
+      router.replace('/(tabs)');
     } catch (err: any) {
       const msg = err.response?.data?.message || 'Erreur lors de l\'inscription.';
       Alert.alert('Inscription échouée', msg);

@@ -31,7 +31,7 @@ export default function RegisterPage() {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 64px)', padding: '24px' }}>
-      <div style={{ background: 'white', borderRadius: '20px', border: '1px solid var(--border)', padding: '40px', width: '100%', maxWidth: '440px', boxShadow: 'var(--shadow-lg)' }}>
+      <div style={{ background: 'var(--card)', borderRadius: '20px', border: '1px solid var(--border)', padding: '40px', width: '100%', maxWidth: '440px', boxShadow: 'var(--shadow-lg)' }}>
         <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.7rem', textAlign: 'center', marginBottom: '6px' }}>Créer un compte</h2>
         <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '28px' }}>Rejoignez la communauté CESIZen</p>
 

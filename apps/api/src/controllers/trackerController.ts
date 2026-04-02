@@ -38,4 +38,22 @@ export const trackerController = {
       res.status(400).json({ error: e.message });
     }
   },
+
+  getStreak: async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+      const streak = await trackerService.getStreak(req.user!.id);
+      res.json({ streak });
+    } catch (e: any) {
+      res.status(400).json({ error: e.message });
+    }
+  },
+
+  getChart30Days: async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+      const chart = await trackerService.getChart30Days(req.user!.id);
+      res.json(chart);
+    } catch (e: any) {
+      res.status(400).json({ error: e.message });
+    }
+  },
 };

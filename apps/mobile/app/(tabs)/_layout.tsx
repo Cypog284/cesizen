@@ -1,23 +1,29 @@
 import { Tabs } from 'expo-router';
 import { Text } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTheme } from '../../src/hooks/useTheme';
 
 function Icon({ symbol }: { symbol: string }) {
-  return <Text style={{ fontSize: 22 }}>{symbol}</Text>;
+  return <Text style={{ fontSize: 20 }}>{symbol}</Text>;
 }
 
 export default function TabsLayout() {
+  const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#2d6a4f',
-        tabBarInactiveTintColor: '#95a5a6',
+        tabBarActiveTintColor: colors.green,
+        tabBarInactiveTintColor: colors.textMuted,
         tabBarStyle: {
-          backgroundColor: '#fff',
-          borderTopColor: '#e8f5e9',
+          backgroundColor: colors.tabBg,
+          borderTopColor: colors.tabBorder,
           borderTopWidth: 1,
-          height: 60,
-          paddingBottom: 8,
+          height: 56 + insets.bottom,
+          paddingBottom: insets.bottom + 4,
+          paddingTop: 6,
         },
         tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
       }}
@@ -25,8 +31,8 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tracker',
-          tabBarIcon: ({ focused }) => <Icon symbol={focused ? '💚' : '🫀'} />,
+          title: 'Accueil',
+          tabBarIcon: ({ focused }) => <Icon symbol={focused ? '🏠' : '🏡'} />,
         }}
       />
       <Tabs.Screen

@@ -10,6 +10,8 @@ export const authApi = {
   getMe: () => api.get<User>('/auth/me').then(r => r.data),
   updateProfile: (data: { firstName?: string; lastName?: string; city?: string }) =>
     api.put('/auth/me', data).then(r => r.data),
+  changePassword: (currentPassword: string, newPassword: string) =>
+    api.put('/auth/me/password', { currentPassword, newPassword }).then(r => r.data),
   deleteAccount: () => api.delete('/auth/me').then(r => r.data),
 };
 
@@ -20,6 +22,8 @@ export const trackerApi = {
   getHistory: () => api.get<TrackerEntry[]>('/tracker').then(r => r.data),
   deleteEntry: (id: string) => api.delete(`/tracker/${id}`).then(r => r.data),
   getReport: () => api.get<TrackerReport>('/tracker/report').then(r => r.data),
+  getStreak: () => api.get<{ streak: number }>('/tracker/streak').then(r => r.data),
+  getChart30Days: () => api.get<{ date: string; count: number; avgIntensity: number }[]>('/tracker/chart').then(r => r.data),
 };
 
 // ── PAGES
@@ -48,6 +52,8 @@ export const emotionsApi = {
 export const adminApi = {
   getUsers: () => api.get<User[]>('/users').then(r => r.data),
   getDashboard: () => api.get<DashboardStats>('/users/dashboard').then(r => r.data),
+  getAnalytics: () => api.get<any>('/users/analytics').then(r => r.data),
+  getUserById: (id: string) => api.get<any>(`/users/${id}`).then(r => r.data),
   updateRole: (id: string, role: string) => api.put(`/users/${id}/role`, { role }).then(r => r.data),
   deleteUser: (id: string) => api.delete(`/users/${id}`).then(r => r.data),
 };

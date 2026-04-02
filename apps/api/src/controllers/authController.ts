@@ -19,7 +19,7 @@ const loginSchema = z.object({
 export const authController = {
   register: async (req: Request, res: Response): Promise<void> => {
     try {
-      const data = registerSchema.parse(req.body);
+      const data = registerSchema.parse(req.body) as { email: string; password: string; firstName: string; lastName: string; city?: string };
       const result = await authService.register(data);
       res.status(201).json(result);
     } catch (e: any) {
@@ -50,6 +50,20 @@ export const authController = {
     try {
       const updated = await authService.updateProfile(req.user!.id, req.body);
       res.json(updated);
+    } catch (e: any) {
+      res.status(400).json({ error: e.message });
+    }
+  },
+
+  changePassword: async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      if (!currentPassword || !newPassword) {
+        res.status(400).json({ error: 'currentPassword et newPassword sont requis' });
+        return;
+      }
+      await authService.changePassword(req.user!.id, currentPassword, newPassword);
+      res.json({ message: 'Mot de passe mis à jour' });
     } catch (e: any) {
       res.status(400).json({ error: e.message });
     }

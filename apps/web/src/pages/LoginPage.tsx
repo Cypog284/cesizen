@@ -25,7 +25,7 @@ export default function LoginPage() {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 64px)', padding: '24px' }}>
-      <div style={{ background: 'white', borderRadius: '20px', border: '1px solid var(--border)', padding: '40px', width: '100%', maxWidth: '420px', boxShadow: 'var(--shadow-lg)' }}>
+      <div style={{ background: 'var(--card)', borderRadius: '20px', border: '1px solid var(--border)', padding: '40px', width: '100%', maxWidth: '420px', boxShadow: 'var(--shadow-lg)' }}>
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <svg viewBox="0 0 40 40" fill="none" width="52" height="52">
             <circle cx="20" cy="8" r="5" fill="#52B788"/>

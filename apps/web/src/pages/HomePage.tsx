@@ -32,7 +32,7 @@ export default function HomePage() {
             {user ? 'Mon Tracker →' : 'Commencer gratuitement'}
           </button>
           <button onClick={() => navigate('/informations')}
-            style={{ padding: '14px 28px', borderRadius: '12px', background: 'white', color: 'var(--green)', border: '2px solid var(--border)', fontSize: '0.95rem', fontWeight: 600, cursor: 'pointer' }}>
+            style={{ padding: '14px 28px', borderRadius: '12px', background: 'var(--card)', color: 'var(--green)', border: '2px solid var(--border)', fontSize: '0.95rem', fontWeight: 600, cursor: 'pointer' }}>
             📚 Découvrir les ressources
           </button>
         </div>
@@ -64,7 +64,7 @@ export default function HomePage() {
             { icon: '📚', bg: '#FEF0E7', title: 'Ressources de prévention', desc: 'Accédez à des contenus de qualité sur la santé mentale, les techniques de respiration et les activités de détente.' },
             { icon: '🔒', bg: '#EEF4FF', title: 'Données sécurisées', desc: 'Vos données sont protégées conformément au RGPD, hébergées exclusivement en Union Européenne.' },
           ].map(f => (
-            <div key={f.title} style={{ background: 'white', borderRadius: 'var(--radius)', padding: '28px', border: '1px solid var(--border)', transition: 'var(--transition)' }}>
+            <div key={f.title} style={{ background: 'var(--card)', borderRadius: 'var(--radius)', padding: '28px', border: '1px solid var(--border)', transition: 'var(--transition)' }}>
               <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: f.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem', marginBottom: '16px' }}>{f.icon}</div>
               <h3 style={{ fontSize: '1.05rem', marginBottom: '8px' }}>{f.title}</h3>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>{f.desc}</p>
@@ -77,7 +77,7 @@ export default function HomePage() {
           <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.8rem', marginBottom: '12px' }}>Rejoignez notre communauté</h2>
           <p style={{ opacity: 0.85, marginBottom: '24px' }}>Commencez votre parcours vers un meilleur équilibre émotionnel dès aujourd'hui.</p>
           <button onClick={() => navigate('/register')}
-            style={{ padding: '14px 28px', borderRadius: '12px', background: 'white', color: 'var(--green)', border: 'none', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}>
+            style={{ padding: '14px 28px', borderRadius: '12px', background: 'var(--card)', color: 'var(--green)', border: 'none', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}>
             Créer mon compte
           </button>
         </div>

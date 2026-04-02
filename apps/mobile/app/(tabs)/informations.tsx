@@ -1,8 +1,9 @@
 import { useCallback, useState } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity, StyleSheet,
-  ActivityIndicator, Alert, Modal, ScrollView, SafeAreaView,
+  ActivityIndicator, Alert, Modal, ScrollView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from 'expo-router';
 import { pagesApi } from '../../src/api/services';
 import { PageInfo, PageCategory } from '../../src/types';
