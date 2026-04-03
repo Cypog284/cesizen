@@ -26,8 +26,6 @@ Voir [docs/INSTALL.md](docs/INSTALL.md) pour le guide complet.
 docker compose up -d --build
 ```
 
-Application disponible sur **http://localhost**
-
 ### Développement local
 
 ```bash
