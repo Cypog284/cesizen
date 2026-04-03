@@ -4,7 +4,7 @@ Application web de suivi de la santé mentale et des émotions, conçue avec la 
 
 ## Stack technique
 
-- **Frontend** : React 18 + TypeScript + Vite
+- **Frontend** : React  + TypeScript + Vite
 - **Backend** : Node.js + Express + TypeScript
 - **Base de données** : PostgreSQL 15 + Prisma ORM
 - **Infrastructure** : Docker + Docker Compose + Nginx
