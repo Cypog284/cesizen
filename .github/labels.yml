@@ -1,0 +1,112 @@
+# Configuration des labels GitHub Issues — CESIZen
+# Appliquer avec : gh label create --force (GitHub CLI)
+# ou manuellement dans GitHub → Issues → Labels
+
+# ── TYPE DE TICKET ────────────────────────────────────────────────────
+- name: "type: bug"
+  color: "d73a4a"
+  description: "Dysfonctionnement de l'application"
+
+- name: "type: évolution"
+  color: "a2eeef"
+  description: "Nouvelle fonctionnalité ou amélioration"
+
+- name: "type: sécurité"
+  color: "e4e669"
+  description: "Problème ou amélioration de sécurité"
+
+- name: "type: documentation"
+  color: "0075ca"
+  description: "Amélioration ou ajout de documentation"
+
+- name: "type: dette technique"
+  color: "cfd3d7"
+  description: "Refactoring, optimisation, mise à jour de dépendances"
+
+# ── PRIORITÉ ─────────────────────────────────────────────────────────
+- name: "priority: P1 - critique"
+  color: "b60205"
+  description: "Service indisponible ou perte de données — traitement immédiat"
+
+- name: "priority: P2 - élevé"
+  color: "e4a71a"
+  description: "Fonctionnalité majeure bloquée — traitement < 4h"
+
+- name: "priority: P3 - moyen"
+  color: "fbca04"
+  description: "Fonctionnalité dégradée — traitement planifié"
+
+- name: "priority: P4 - faible"
+  color: "0e8a16"
+  description: "Amélioration mineure — roadmap"
+
+# ── STATUT ───────────────────────────────────────────────────────────
+- name: "status: à qualifier"
+  color: "d4c5f9"
+  description: "Ticket reçu, en attente de qualification"
+
+- name: "status: confirmé"
+  color: "5319e7"
+  description: "Ticket qualifié et confirmé, prêt à être traité"
+
+- name: "status: en cours"
+  color: "0052cc"
+  description: "En cours de développement"
+
+- name: "status: en revue"
+  color: "006b75"
+  description: "Pull request ouverte, en attente de revue"
+
+- name: "status: en test"
+  color: "bfd4f2"
+  description: "Correction déployée en staging, en attente de validation"
+
+- name: "status: fermé - résolu"
+  color: "0e8a16"
+  description: "Résolu et validé en production"
+
+- name: "status: fermé - dupliqué"
+  color: "cfd3d7"
+  description: "Doublon d'un ticket existant"
+
+- name: "status: fermé - invalide"
+  color: "cfd3d7"
+  description: "Non reproductible ou hors périmètre"
+
+# ── COMPOSANT ────────────────────────────────────────────────────────
+- name: "composant: api"
+  color: "f9d0c4"
+  description: "Backend Node.js / Express"
+
+- name: "composant: web"
+  color: "c2e0c6"
+  description: "Frontend React"
+
+- name: "composant: base de données"
+  color: "fef2c0"
+  description: "PostgreSQL / Prisma / migrations"
+
+- name: "composant: infrastructure"
+  color: "e8f4f8"
+  description: "Docker, CI/CD, déploiement"
+
+- name: "composant: authentification"
+  color: "f9d0c4"
+  description: "JWT, RBAC, gestion des comptes"
+
+- name: "composant: tracker"
+  color: "c2e0c6"
+  description: "Module tracker d'émotions"
+
+# ── DIVERS ───────────────────────────────────────────────────────────
+- name: "good first issue"
+  color: "7057ff"
+  description: "Bon point d'entrée pour les nouveaux contributeurs"
+
+- name: "help wanted"
+  color: "008672"
+  description: "Contribution externe bienvenue"
+
+- name: "blocked"
+  color: "b60205"
+  description: "Bloqué par une dépendance externe"

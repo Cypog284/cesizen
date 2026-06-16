@@ -1,0 +1,13 @@
+{
+  "name": "cesizen",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:api": "npm run dev --prefix apps/api",
+    "dev:web": "npm run dev --prefix apps/web",
+    "dev:mobile": "npm run start --prefix apps/mobile",
+    "test:api": "npm test --prefix apps/api",
+    "test:api:watch": "npm run test:watch --prefix apps/api",
+    "test:api:coverage": "npm run test:coverage --prefix apps/api"
+  }
+}

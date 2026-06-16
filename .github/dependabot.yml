@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /apps/api
+    schedule:
+      interval: weekly
+    labels:
+      - "type: dette technique"
+      - "priority: P3 - moyen"
+
+  - package-ecosystem: npm
+    directory: /apps/web
+    schedule:
+      interval: weekly
+    labels:
+      - "type: dette technique"
+      - "priority: P3 - moyen"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    labels:
+      - "type: dette technique"
+      - "composant: infrastructure"

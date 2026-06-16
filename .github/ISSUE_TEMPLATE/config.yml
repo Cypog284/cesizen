@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: "📖 Documentation"
+    url: https://github.com/cesizen/cesizen/blob/main/docs/INSTALL.md
+    about: Consulter la documentation avant d'ouvrir une issue
+  - name: "🔒 Vulnérabilité critique"
+    url: mailto:corentin.dapremont@gmail.com
+    about: Pour les failles de sécurité critiques, contacter directement le mainteneur

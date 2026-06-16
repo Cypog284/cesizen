@@ -6,13 +6,47 @@ services:
     container_name: cesizen_db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: cesizen
-      POSTGRES_PASSWORD: cesizen_secret
-      POSTGRES_DB: cesizen_db
+      POSTGRES_USER: ${POSTGRES_USER:-cesizen}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cesizen_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-cesizen_db}
     ports:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cesizen}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: cesizen_api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-cesizen}:${POSTGRES_PASSWORD:-cesizen_secret}@postgres:5432/${POSTGRES_DB:-cesizen_db}
+      JWT_SECRET: ${JWT_SECRET:-change_this_in_production}
+      PORT: 3000
+      NODE_ENV: ${NODE_ENV:-production}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '3000:3000'
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    container_name: cesizen_web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - '80:80'
 
 volumes:
   postgres_data:
