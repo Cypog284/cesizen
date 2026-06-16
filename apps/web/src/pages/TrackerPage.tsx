@@ -71,7 +71,7 @@ function Chart30Days({ data }: { data: ChartDay[] }) {
         {/* Points */}
         {points.map((p, i) => (
           <g key={i}
-            onMouseEnter={e => setTooltip({ i, x: p.x, y: p.y })}
+            onMouseEnter={_e => setTooltip({ i, x: p.x, y: p.y })}
             onMouseLeave={() => setTooltip(null)}
             style={{ cursor: 'pointer' }}>
             <circle cx={p.x} cy={p.y} r="5" fill="white" stroke="var(--green)" strokeWidth="2.5" />

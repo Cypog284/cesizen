@@ -62,7 +62,7 @@ function RegistrationsChart({ data }: { data: { date: string; count: number }[] 
         const y = padY + h - (t / maxVal) * h;
         return <g key={t}><line x1={padX} y1={y} x2={W - padX} y2={y} stroke="var(--border)" strokeDasharray="4 3" /><text x={padX - 6} y={y + 4} textAnchor="end" fontSize={10} fill="var(--text-muted)">{t}</text></g>;
       })}
-      {data.filter((_, i) => i % 7 === 0 || i === data.length - 1).map((d, _, arr) => {
+      {data.filter((_, i) => i % 7 === 0 || i === data.length - 1).map((d, _i) => {
         const idx = data.indexOf(d);
         const p = pts[idx];
         const label = new Date(d.date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
@@ -170,7 +170,7 @@ export default function AdminPage() {
   }
 
   // What roles can the current user assign to a target?
-  function assignableRoles(target: User): Array<'USER' | 'ADMIN'> {
+  function assignableRoles(_target: User): Array<'USER' | 'ADMIN'> {
     if (currentUser?.role === 'SUPER_ADMIN') return ['USER', 'ADMIN'];
     return ['USER', 'ADMIN']; // ADMIN can also do USER/ADMIN but not SUPER_ADMIN
   }
