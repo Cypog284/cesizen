@@ -149,7 +149,7 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
 
       - name: Build et push image API
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: apps/api
           push: true
@@ -157,7 +157,7 @@ jobs:
           labels: ${{ steps.meta-api.outputs.labels }}
 
       - name: Build et push image Web
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: apps/web
           push: true
