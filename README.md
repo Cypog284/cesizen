@@ -4,7 +4,7 @@ Application web de suivi de la santé mentale et des émotions, conçue avec la 
 
 ## Stack technique
 
-- **Frontend** : React 18 + TypeScript + Vite
+- **Frontend** : React  + TypeScript + Vite
 - **Backend** : Node.js + Express + TypeScript
 - **Base de données** : PostgreSQL 15 + Prisma ORM
 - **Infrastructure** : Docker + Docker Compose + Nginx
@@ -25,8 +25,6 @@ Voir [docs/INSTALL.md](docs/INSTALL.md) pour le guide complet.
 # Lancer toute la stack avec Docker
 docker compose up -d --build
 ```
-
-Application disponible sur **http://localhost**
 
 ### Développement local
 
