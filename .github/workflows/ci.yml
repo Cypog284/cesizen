@@ -130,7 +130,7 @@ jobs:
 
       - name: Extraction des métadonnées (tags) — API
         id: meta-api
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.IMAGE_API }}
           tags: |
@@ -140,7 +140,7 @@ jobs:
 
       - name: Extraction des métadonnées (tags) — Web
         id: meta-web
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.IMAGE_WEB }}
           tags: |
