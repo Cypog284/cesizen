@@ -188,7 +188,7 @@ jobs:
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           script: |
-            cd /opt/cesizen
+            cd ~/cesizen
             # Récupération de la dernière version de la configuration
             git pull origin main
             # Mise à jour des images Docker
