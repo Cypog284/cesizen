@@ -36,9 +36,13 @@ app.use(cors({
 app.use(express.json({ limit: '10kb' }));
 
 // ── Sécurité : rate limiting global (anti-flood)
+// Désactivé en environnement de test pour ne pas bloquer les suites Jest
+const isTest = process.env.NODE_ENV === 'test';
+
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200,
+  max: isTest ? 0 : 200,    // 0 = illimité en test
+  skip: () => isTest,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Trop de requêtes, veuillez réessayer dans 15 minutes.' },
@@ -48,7 +52,8 @@ app.use(globalLimiter);
 // ── Sécurité : rate limiting strict sur l'authentification (anti-brute force)
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // 10 tentatives de login max par fenêtre
+  max: isTest ? 0 : 10,     // 0 = illimité en test
+  skip: () => isTest,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Trop de tentatives de connexion, réessayez dans 15 minutes.' },
