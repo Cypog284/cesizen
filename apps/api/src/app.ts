@@ -68,7 +68,7 @@ app.use('/api/users', userRoutes);
 
 // ── Health check
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', service: 'CESIZen API', version: '1.0.1' });
+  res.json({ status: 'ok', service: 'CESIZen API', version: '1.0.2' });
 });
 
 // ── 404
