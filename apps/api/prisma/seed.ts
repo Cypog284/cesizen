@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Seeding CESIZen database...');
+  console.log('🌱 Seeding CESIZen database..');
 
   // ── Emotions Niveau 1
   const emotionData = [
